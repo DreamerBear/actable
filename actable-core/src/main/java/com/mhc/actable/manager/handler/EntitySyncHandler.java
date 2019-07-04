@@ -2,7 +2,7 @@ package com.mhc.actable.manager.handler;
 
 
 /**
- * 启动时执行处理的接口
+ * Entity同步执行器
  *
  * @author chenbin.sun
  */
