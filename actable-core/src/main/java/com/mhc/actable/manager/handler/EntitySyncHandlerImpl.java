@@ -18,9 +18,9 @@ import java.util.List;
  */
 @SuppressWarnings("restriction")
 @Service
-public class StartUpHandlerImpl implements StartUpHandler {
+public class EntitySyncHandlerImpl implements EntitySyncHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(StartUpHandlerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(EntitySyncHandlerImpl.class);
 
     @Autowired
     private SysMysqlCreateTableManager sysMysqlCreateTableManager;

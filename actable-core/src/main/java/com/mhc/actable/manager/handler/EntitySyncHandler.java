@@ -6,7 +6,7 @@ package com.mhc.actable.manager.handler;
  *
  * @author chenbin.sun
  */
-public interface StartUpHandler {
+public interface EntitySyncHandler {
 
     /**
      * 将Jar包中的Entities同步到spring-datasource主数据库,只支持mysql
