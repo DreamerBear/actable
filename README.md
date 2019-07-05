@@ -1,6 +1,8 @@
 # <img src="http://img.jasoncui.online/logo.svg" height=120 /> actable(表结构同步工具)
 
 [![version][version-badge]][CHANGELOG] 
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+
 
   为统一数据平台开发的表结构同步工具<br/>
   是一个基于Spring和Mybatis的Maven项目，支持springboot，增强了Mybatis的功能<br/>
