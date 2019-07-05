@@ -1,4 +1,4 @@
-package com.mhc.actable.command;
+package com.mhc.actable.core.command;
 
 /**
  * 用于查询表中字段结构详细信息

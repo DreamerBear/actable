@@ -1,4 +1,4 @@
-package com.mhc.actable.command;
+package com.mhc.actable.core.command;
 
 import java.util.List;
 

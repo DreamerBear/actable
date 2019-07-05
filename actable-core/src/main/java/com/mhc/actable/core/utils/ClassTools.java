@@ -1,4 +1,4 @@
-package com.mhc.actable.utils;
+package com.mhc.actable.core.utils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package com.mhc.actable.manager.handler;
+package com.mhc.actable;
 
-import com.mhc.actable.manager.system.SysMysqlCreateTableManager;
-import com.mhc.actable.manager.util.SpringContextUtil;
-import com.mhc.actable.utils.JarUtils;
+import com.mhc.actable.core.manager.system.SysMysqlCreateTableManager;
+import com.mhc.actable.core.manager.util.SpringContextUtil;
+import com.mhc.actable.core.utils.JarUtils;
 import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

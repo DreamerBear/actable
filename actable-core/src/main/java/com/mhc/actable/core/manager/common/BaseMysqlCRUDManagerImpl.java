@@ -1,4 +1,4 @@
-package com.mhc.actable.manager.common;
+package com.mhc.actable.core.manager.common;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -10,9 +10,9 @@ import java.util.Map;
 
 import com.mhc.actable.annotation.Column;
 import com.mhc.actable.annotation.Table;
-import com.mhc.actable.command.PageResultCommand;
-import com.mhc.actable.command.SaveOrUpdateDataCommand;
-import com.mhc.actable.dao.common.BaseMysqlCRUDMapper;
+import com.mhc.actable.core.command.PageResultCommand;
+import com.mhc.actable.core.command.SaveOrUpdateDataCommand;
+import com.mhc.actable.core.dao.common.BaseMysqlCRUDMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

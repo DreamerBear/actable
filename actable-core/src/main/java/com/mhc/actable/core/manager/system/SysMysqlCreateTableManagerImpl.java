@@ -1,13 +1,13 @@
-package com.mhc.actable.manager.system;
+package com.mhc.actable.core.manager.system;
 
 import com.mhc.actable.annotation.*;
-import com.mhc.actable.command.CreateTableParam;
-import com.mhc.actable.command.SysMysqlColumns;
-import com.mhc.actable.command.TableConfigParam;
-import com.mhc.actable.constants.Constants;
+import com.mhc.actable.core.command.CreateTableParam;
+import com.mhc.actable.core.command.SysMysqlColumns;
+import com.mhc.actable.core.command.TableConfigParam;
+import com.mhc.actable.core.constants.Constants;
 import com.mhc.actable.constants.MySqlTypeConstant;
-import com.mhc.actable.dao.system.CreateMysqlTablesMapper;
-import com.mhc.actable.utils.ClassTools;
+import com.mhc.actable.core.dao.system.CreateMysqlTablesMapper;
+import com.mhc.actable.core.utils.ClassTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.mhc.actable.dao.system;
+package com.mhc.actable.core.dao.system;
 
-import com.mhc.actable.command.SysMysqlColumns;
-import com.mhc.actable.command.TableConfigParam;
+import com.mhc.actable.core.command.SysMysqlColumns;
+import com.mhc.actable.core.command.TableConfigParam;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

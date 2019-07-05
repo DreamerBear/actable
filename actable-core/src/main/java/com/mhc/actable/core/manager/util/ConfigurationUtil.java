@@ -1,9 +1,9 @@
-package com.mhc.actable.manager.util;
+package com.mhc.actable.core.manager.util;
 
 import java.lang.reflect.Method;
 import java.util.Properties;
 
-import com.mhc.actable.constants.Constants;
+import com.mhc.actable.core.constants.Constants;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;

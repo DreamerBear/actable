@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mhc.actable.dao.common.BaseMysqlCRUDMapper">
+<mapper namespace="com.mhc.actable.core.dao.common.BaseMysqlCRUDMapper">
 	<!-- 保存 -->
-	<insert id="save" parameterType="com.mhc.actable.command.SaveOrUpdateDataCommand" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.mhc.actable.core.command.SaveOrUpdateDataCommand" useGeneratedKeys="true" keyProperty="id">
 
 		<foreach collection="tableMap" index="key" item="value">
 			insert into `${key}`(
@@ -24,7 +24,7 @@
 	</insert>
 	
 	<!-- 更新 -->
-	<update id="update" parameterType="com.mhc.actable.command.SaveOrUpdateDataCommand" useGeneratedKeys="true" keyProperty="id">
+	<update id="update" parameterType="com.mhc.actable.core.command.SaveOrUpdateDataCommand" useGeneratedKeys="true" keyProperty="id">
 
 		<foreach collection="tableMap" index="key" item="value">
 			update `${key}`
@@ -50,7 +50,7 @@
 	</update>
 	
 	<!-- 更新，可以更新null -->
-	<update id="updateWithNull" parameterType="com.mhc.actable.command.SaveOrUpdateDataCommand" useGeneratedKeys="true" keyProperty="id">
+	<update id="updateWithNull" parameterType="com.mhc.actable.core.command.SaveOrUpdateDataCommand" useGeneratedKeys="true" keyProperty="id">
 
 		<foreach collection="tableMap" index="key" item="value">
 			update `${key}`

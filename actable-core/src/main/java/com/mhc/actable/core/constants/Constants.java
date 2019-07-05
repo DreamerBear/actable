@@ -1,4 +1,4 @@
-package com.mhc.actable.constants;
+package com.mhc.actable.core.constants;
 
 public class Constants {
 

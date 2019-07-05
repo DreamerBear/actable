@@ -1,4 +1,4 @@
-package com.mhc.actable.manager.system;
+package com.mhc.actable.core.manager.system;
 
 
 import java.util.List;

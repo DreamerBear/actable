@@ -1,6 +1,6 @@
-package com.mhc.actable.manager.common;
+package com.mhc.actable.core.manager.common;
 
-import com.mhc.actable.command.PageResultCommand;
+import com.mhc.actable.core.command.PageResultCommand;
 
 import java.util.LinkedHashMap;
 import java.util.List;

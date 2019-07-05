@@ -1,4 +1,4 @@
-package com.mhc.actable.manager.util;
+package com.mhc.actable.core.manager.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

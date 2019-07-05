@@ -1,10 +1,10 @@
-package com.mhc.actable.dao.common;
+package com.mhc.actable.core.dao.common;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mhc.actable.command.SaveOrUpdateDataCommand;
+import com.mhc.actable.core.command.SaveOrUpdateDataCommand;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 

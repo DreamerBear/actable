@@ -9,7 +9,7 @@
     </modules>
     <groupId>com.mhc</groupId>
     <artifactId>actable</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>actable</name>
     <description>通过注解方式定义表</description>
 

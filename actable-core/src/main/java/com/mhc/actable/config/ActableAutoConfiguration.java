@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * 注意：本内容仅限于卖好车内部传阅，禁止外泄以及用于其他的商业目
  */
 @Configuration
-@ComponentScan("com.mhc.actable.manager.*")
-@MapperScan("com.mhc.actable.dao.*")
+@ComponentScan("com.mhc.actable.core.*")
+@MapperScan("com.mhc.actable.core.dao.*")
 public class ActableAutoConfiguration {
 }
