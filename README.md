@@ -2,11 +2,11 @@
 
 [![version][version-badge]][CHANGELOG] 
 
-  为统一数据平台开发的表结构同步工具
-  是一个基于Spring和Mybatis的Maven项目，支持springboot，增强了Mybatis的功能
-  通过读取jar包中model注解的方式来创建表，修改表结构，目前仅支持Mysql
-  已通过provided阻止maven依赖传递性
-  例子见:[actable-demo]
+  为统一数据平台开发的表结构同步工具<br/>
+  是一个基于Spring和Mybatis的Maven项目，支持springboot，增强了Mybatis的功能<br/>
+  通过读取jar包中model注解的方式来创建表，修改表结构，目前仅支持Mysql<br/>
+  已通过provided阻止maven依赖传递性<br/>
+  例子见:[actable-demo]<br/>
   
 ## Development
 ### 项目包结构说明
@@ -23,7 +23,7 @@
 
 ### 接入说明
 完整示例参考:[actable-demo]
-####创建表结构定义jar包
+#### 创建表结构定义jar包
 1.创建jar包项目,添加pom依赖
 ```xml
 <dependency>
@@ -61,7 +61,7 @@ public class TestA {
 }
 ```
 3.将jar包项目打好包,保存在本地目录
-####springboot项目读取jar包,并执行表结构同步
+#### springboot项目读取jar包,并执行表结构同步
 1.在启动类上添加@EnableActable注解
 ```java
 @SpringBootApplication
@@ -76,6 +76,7 @@ public class ActableDemoServerApplication {
 ```
 2.调用EntitySyncHandler方法
 ```java
+String jarLocalPath = "/Users/xxx/repo/com/mhc/actable-demo-jar/1.0.0-SNAPSHOT/actable-demo-jar-1.0.0-SNAPSHOT.jar"
 EntitySyncHandler.syncJarEntitiesToMainDB(jarLocalPath);
 ```
 
