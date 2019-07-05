@@ -26,12 +26,11 @@ public class EntitySyncHandler {
      */
     public static void syncJarEntitiesToMainDB(String jarLocalPath) {
         try {
-
             Pair<ClassLoader, List<Class>> pair = JarUtils.fetchEntityClassesFromJar(jarLocalPath);
             List<Class> entities = pair.getValue();
             log.info("执行Entities同步处理方法,entities = {}", entities);
             SysMysqlCreateTableManager sysMysqlCreateTableManager = SpringContextUtil.getBean(SysMysqlCreateTableManager.class);
-            sysMysqlCreateTableManager.createMysqlTable(entities);
+            sysMysqlCreateTableManager.syncMysqlTable(entities);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

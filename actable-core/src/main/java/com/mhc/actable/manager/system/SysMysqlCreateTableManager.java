@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface SysMysqlCreateTableManager {
 
-	public void createMysqlTable(List<Class> entities);
+	public void syncMysqlTable(List<Class> entities);
 	
 }

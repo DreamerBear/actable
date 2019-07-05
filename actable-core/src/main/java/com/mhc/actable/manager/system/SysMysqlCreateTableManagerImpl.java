@@ -41,7 +41,7 @@ public class SysMysqlCreateTableManagerImpl implements SysMysqlCreateTableManage
      * 读取配置文件的三种状态（创建表、更新表、不做任何事情）
      */
     @Override
-    public void createMysqlTable(List<Class> entities) {
+    public void syncMysqlTable(List<Class> entities) {
         // 初始化用于存储各种操作表结构的容器
         Map<String, Map<TableConfigParam, List<Object>>> baseTableMap = initTableMap();
 
