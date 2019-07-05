@@ -11,9 +11,9 @@ import java.util.List;
 
 
 /**
- * 启动时进行处理的实现类
+ * 表结构同步器
  *
- * @author chenbin.sun
+ * @author xuchao
  */
 public class EntitySyncHandler {
 
