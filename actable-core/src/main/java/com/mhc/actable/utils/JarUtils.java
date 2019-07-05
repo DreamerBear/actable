@@ -18,7 +18,7 @@ import java.util.jar.JarFile;
  *
  * @author xuchao
  */
-public class JarUtil {
+public class JarUtils {
 
     /**
      * 加载本机路径的jar包,扫描出带@Table注解的类列表

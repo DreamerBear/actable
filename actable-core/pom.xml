@@ -31,6 +31,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.mybatis.scripting</groupId>
             <artifactId>mybatis-velocity</artifactId>
             <scope>provided</scope>
@@ -46,6 +52,7 @@
             <groupId>com.mhc</groupId>
             <artifactId>actable-annotation</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>
