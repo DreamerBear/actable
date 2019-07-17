@@ -1,5 +1,6 @@
 package com.mhc.actable.core.manager.system;
 
+import com.alibaba.druid.sql.SQLUtils;
 import com.mhc.actable.annotation.*;
 import com.mhc.actable.core.command.CreateTableParam;
 import com.mhc.actable.core.command.SysMysqlColumns;
@@ -8,6 +9,7 @@ import com.mhc.actable.core.constants.Constants;
 import com.mhc.actable.constants.MySqlTypeConstant;
 import com.mhc.actable.core.dao.system.CreateMysqlTablesMapper;
 import com.mhc.actable.core.utils.ClassTools;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class SysMysqlCreateTableManagerImpl implements SysMysqlCreateTableManage
     @Autowired
     private CreateMysqlTablesMapper createMysqlTablesMapper;
 
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
+
     // 获取Mysql的类型，以及类型需要设置几个长度
     private static Map<String, Object> mySqlTypeAndLengthMap = mySqlTypeAndLengthMap();
 
@@ -58,6 +63,24 @@ public class SysMysqlCreateTableManagerImpl implements SysMysqlCreateTableManage
 
         // 根据传入的map，分别去创建或修改表结构
         createOrModifyTableConstruct(baseTableMap);
+    }
+
+    @Override
+    public List<String> generateDDLs(List<Class> entities) {
+        // 初始化用于存储各种操作表结构的容器
+        Map<String, Map<TableConfigParam, List<Object>>> baseTableMap = initTableMap();
+
+        // 循环全部的model
+        for (Class<?> clas : entities) {
+
+            // 没有打注解不需要创建表
+            if (null == clas.getAnnotation(Table.class)) {
+                continue;
+            }
+            // 构建出全部表的增删改的map
+            buildTableMapConstruct(clas, baseTableMap);
+        }
+        return generateTableDDLs(baseTableMap);
     }
 
     /**
@@ -526,6 +549,177 @@ public class SysMysqlCreateTableManagerImpl implements SysMysqlCreateTableManage
         // 8. 创建约束
         addUniqueByMap(baseTableMap.get(Constants.ADDUNIQUE_TABLE_MAP));
 
+    }
+
+    /**
+     * 根据传入的map创建或修改表结构
+     *
+     * @param baseTableMap 操作sql的数据结构
+     */
+    private List<String> generateTableDDLs(Map<String, Map<TableConfigParam, List<Object>>> baseTableMap) {
+        List<String> ddls = new ArrayList<>();
+        // 1. 创建表
+        ddls.addAll(generateCreateTableDDLs(baseTableMap.get(Constants.NEW_TABLE_MAP)));
+        // 2. 删除要变更主键的表的原来的字段的主键
+        ddls.addAll(generateDropFieldsDDLs(baseTableMap.get(Constants.DROPKEY_TABLE_MAP)));
+        // 3. 添加新的字段
+        ddls.addAll(generateAddFieldsDDLs(baseTableMap.get(Constants.ADD_TABLE_MAP)));
+        // 4. 删除字段
+        ddls.addAll(generateRemoveFieldsDDLs(baseTableMap.get(Constants.REMOVE_TABLE_MAP)));
+        // 5. 修改字段类型等
+        ddls.addAll(generateModifyFieldsDDLs(baseTableMap.get(Constants.MODIFY_TABLE_MAP)));
+        // 6. 删除索引和约束
+        ddls.addAll(generateDropIndexAndUniqueDDLs(baseTableMap.get(Constants.DROPINDEXANDUNIQUE_TABLE_MAP)));
+        // 7. 创建索引
+        ddls.addAll(generateAddIndexDDLs(baseTableMap.get(Constants.ADDINDEX_TABLE_MAP)));
+        // 8. 创建约束
+        ddls.addAll(generateAddUniqueDDLs(baseTableMap.get(Constants.ADDUNIQUE_TABLE_MAP)));
+        return ddls;
+    }
+
+    private List<String> generateAddUniqueDDLs(Map<TableConfigParam, List<Object>> addUniqueMap) {
+        List<String> ddls = new ArrayList<>();
+        if (addUniqueMap.size() > 0) {
+            for (Entry<TableConfigParam, List<Object>> entry : addUniqueMap.entrySet()) {
+                for (Object obj : entry.getValue()) {
+                    Map<TableConfigParam, Object> map = new HashMap<TableConfigParam, Object>();
+                    map.put(entry.getKey(), obj);
+                    CreateTableParam fieldProperties = (CreateTableParam) obj;
+                    if (null != fieldProperties.getFiledUniqueName()) {
+                        Map<String, Map<TableConfigParam, Object>> param = new HashMap<>();
+                        param.put("tableMap", map);
+                        String sql = sqlSessionFactory.getConfiguration().getMappedStatement("com.mhc.actable.core.dao.system.CreateMysqlTablesMapper.addTableUnique").getBoundSql(param).getSql();
+                        ddls.add(SQLUtils.formatMySql(sql));
+                    }
+                }
+            }
+        }
+        return ddls;
+    }
+
+    private List<String> generateAddIndexDDLs(Map<TableConfigParam, List<Object>> addIndexMap) {
+        List<String> ddls = new ArrayList<>();
+        if (addIndexMap.size() > 0) {
+            for (Entry<TableConfigParam, List<Object>> entry : addIndexMap.entrySet()) {
+                for (Object obj : entry.getValue()) {
+                    Map<TableConfigParam, Object> map = new HashMap<TableConfigParam, Object>();
+                    map.put(entry.getKey(), obj);
+                    CreateTableParam fieldProperties = (CreateTableParam) obj;
+                    if (null != fieldProperties.getFiledIndexName()) {
+                        Map<String, Map<TableConfigParam, Object>> param = new HashMap<>();
+                        param.put("tableMap", map);
+                        String sql = sqlSessionFactory.getConfiguration().getMappedStatement("com.mhc.actable.core.dao.system.CreateMysqlTablesMapper.addTableIndex").getBoundSql(param).getSql();
+                        ddls.add(SQLUtils.formatMySql(sql));
+                    }
+                }
+            }
+        }
+        return ddls;
+    }
+
+    private List<String> generateDropIndexAndUniqueDDLs(Map<TableConfigParam, List<Object>> dropIndexAndUniqueMap) {
+        List<String> ddls = new ArrayList<>();
+        if (dropIndexAndUniqueMap.size() > 0) {
+            for (Entry<TableConfigParam, List<Object>> entry : dropIndexAndUniqueMap.entrySet()) {
+                for (Object obj : entry.getValue()) {
+                    Map<TableConfigParam, Object> map = new HashMap<TableConfigParam, Object>();
+                    map.put(entry.getKey(), obj);
+                    Map<String, Map<TableConfigParam, Object>> param = new HashMap<>();
+                    param.put("tableMap", map);
+                    String sql = sqlSessionFactory.getConfiguration().getMappedStatement("com.mhc.actable.core.dao.system.CreateMysqlTablesMapper.dorpTabelIndex").getBoundSql(param).getSql();
+                    ddls.add(SQLUtils.formatMySql(sql));
+                }
+            }
+        }
+        return ddls;
+    }
+
+    private List<String> generateModifyFieldsDDLs(Map<TableConfigParam, List<Object>> modifyTableMap) {
+        List<String> ddls = new ArrayList<>();
+        // 做修改字段操作
+        if (modifyTableMap.size() > 0) {
+            for (Entry<TableConfigParam, List<Object>> entry : modifyTableMap.entrySet()) {
+                for (Object obj : entry.getValue()) {
+                    Map<TableConfigParam, Object> map = new HashMap<TableConfigParam, Object>();
+                    map.put(entry.getKey(), obj);
+                    Map<String, Map<TableConfigParam, Object>> param = new HashMap<>();
+                    param.put("tableMap", map);
+                    String sql = sqlSessionFactory.getConfiguration().getMappedStatement("com.mhc.actable.core.dao.system.CreateMysqlTablesMapper.modifyTableField").getBoundSql(param).getSql();
+                    ddls.add(SQLUtils.formatMySql(sql));
+                }
+            }
+        }
+        return ddls;
+    }
+
+    private List<String> generateRemoveFieldsDDLs(Map<TableConfigParam, List<Object>> removeTableMap) {
+        List<String> ddls = new ArrayList<>();
+        // 做删除字段操作
+        if (removeTableMap.size() > 0) {
+            for (Entry<TableConfigParam, List<Object>> entry : removeTableMap.entrySet()) {
+                for (Object obj : entry.getValue()) {
+                    Map<TableConfigParam, Object> map = new HashMap<TableConfigParam, Object>();
+                    map.put(entry.getKey(), obj);
+                    Map<String, Map<TableConfigParam, Object>> param = new HashMap<>();
+                    param.put("tableMap", map);
+                    String sql = sqlSessionFactory.getConfiguration().getMappedStatement("com.mhc.actable.core.dao.system.CreateMysqlTablesMapper.removeTableField").getBoundSql(param).getSql();
+                    ddls.add(SQLUtils.formatMySql(sql));
+                }
+            }
+        }
+        return ddls;
+    }
+
+    private List<String> generateAddFieldsDDLs(Map<TableConfigParam, List<Object>> addTableMap) {
+        List<String> ddls = new ArrayList<>();
+        // 做增加字段操作
+        if (addTableMap.size() > 0) {
+            for (Entry<TableConfigParam, List<Object>> entry : addTableMap.entrySet()) {
+                for (Object obj : entry.getValue()) {
+                    Map<TableConfigParam, Object> map = new HashMap<TableConfigParam, Object>();
+                    map.put(entry.getKey(), obj);
+                    Map<String, Map<TableConfigParam, Object>> param = new HashMap<>();
+                    param.put("tableMap", map);
+                    String sql = sqlSessionFactory.getConfiguration().getMappedStatement("com.mhc.actable.core.dao.system.CreateMysqlTablesMapper.addTableField").getBoundSql(param).getSql();
+                    ddls.add(SQLUtils.formatMySql(sql));
+                }
+            }
+        }
+        return ddls;
+    }
+
+    private List<String> generateDropFieldsDDLs(Map<TableConfigParam, List<Object>> dropKeyTableMap) {
+        List<String> ddls = new ArrayList<>();
+        // 先去做删除主键的操作，这步操作必须在增加和修改字段之前！
+        if (dropKeyTableMap.size() > 0) {
+            for (Entry<TableConfigParam, List<Object>> entry : dropKeyTableMap.entrySet()) {
+                for (Object obj : entry.getValue()) {
+                    Map<TableConfigParam, Object> map = new HashMap<TableConfigParam, Object>();
+                    map.put(entry.getKey(), obj);
+                    Map<String, Map<TableConfigParam, Object>> param = new HashMap<>();
+                    param.put("tableMap", map);
+                    String sql = sqlSessionFactory.getConfiguration().getMappedStatement("com.mhc.actable.core.dao.system.CreateMysqlTablesMapper.dropKeyTableField").getBoundSql(param).getSql();
+                    ddls.add(SQLUtils.formatMySql(sql));
+                }
+            }
+        }
+        return ddls;
+    }
+
+    private List<String> generateCreateTableDDLs(Map<TableConfigParam, List<Object>> newTableMap) {
+        List<String> ddls = new ArrayList<>();
+        // 做创建表操作
+        if (newTableMap.size() > 0) {
+            for (Entry<TableConfigParam, List<Object>> entry : newTableMap.entrySet()) {
+                Map<TableConfigParam, List<Object>> map = new HashMap<TableConfigParam, List<Object>>();
+                map.put(entry.getKey(), entry.getValue());
+                Map<String, Map<TableConfigParam, List<Object>>> param = new HashMap<>();
+                param.put("tableMap", map);
+                String sql = sqlSessionFactory.getConfiguration().getMappedStatement("com.mhc.actable.core.dao.system.CreateMysqlTablesMapper.createTable").getBoundSql(param).getSql();
+                ddls.add(SQLUtils.formatMySql(sql));
+            }
+        }
+        return ddls;
     }
 
     /**

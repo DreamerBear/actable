@@ -29,7 +29,7 @@
 <dependency>
     <groupId>com.mhc</groupId>
     <artifactId>actable-annotation</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 2.jar包项目中添加表结构定义model,表结构定义注解在com.mhc.actable.annotation包下,注释自说明
@@ -89,5 +89,5 @@ Thank you for your help improving our performance at a time!
 Any questions contact with xuchao@maihaoche.com please.
 
 [CHANGELOG]: ./CHANGELOG.md
-[version-badge]: https://img.shields.io/badge/version-1.0.0-blue.svg
+[version-badge]: https://img.shields.io/badge/version-1.0.1-blue.svg
 [actable-demo]: https://git.dawanju.net/xuchao/actable-demo

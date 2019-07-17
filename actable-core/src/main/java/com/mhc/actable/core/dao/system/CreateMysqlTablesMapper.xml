@@ -48,14 +48,14 @@
 		<!-- 不是自增长的才能有默认值 -->
 		<!-- 并且不为null时，因为null是默认的没必要写 -->
 		<if test="!fields.fieldIsAutoIncrement and !fields.fieldIsNull and fields.fieldDefaultValue != 'NULL'">
-			DEFAULT #{fields.fieldDefaultValue} 
+			DEFAULT '${fields.fieldDefaultValue}'
 		</if>
 		<!-- 不是自增长的才能有默认值 -->
 		<!-- 不是非空时，并且默认值不是NUll -->
 		<if test="!fields.fieldIsAutoIncrement and fields.fieldIsNull and fields.fieldDefaultValue != 'NULL'">
-			DEFAULT #{fields.fieldDefaultValue} 
+			DEFAULT '${fields.fieldDefaultValue}'
 		</if>
-			COMMENT #{fields.comment}
+			COMMENT '${fields.comment}'
 	</sql>
 
 	<!-- 创建表的 -->
@@ -69,7 +69,7 @@
 					,PRIMARY KEY (`${fields.fieldName}`)
 				</if>
 			</foreach>
-			) COMMENT = #{key.tableComment};
+			) COMMENT = '${key.tableComment}';
 		</foreach>
 
 	</select>
@@ -77,12 +77,12 @@
 	<!-- 验证表是否存在 -->
 	<select id="findTableCountByTableName" resultType="int" parameterType="String">
 		select count(1) from information_schema.tables
-		where table_name = #{tableName} and table_schema = (select database())
+		where table_name = '${tableName}' and table_schema = (select database())
 	</select>
 	
 	<!-- 根据表名查询表的结构 -->
 	<select id="findTableEnsembleByTableName" resultMap="SysMysqlColumnsResultMap" parameterType="String">
-		select * from information_schema.columns where table_name = #{tableName} and table_schema = (select database())
+		select * from information_schema.columns where table_name = '${tableName}' and table_schema = (select database())
 	</select>
 	
 	<!-- 增加字段 -->
@@ -138,7 +138,7 @@
 	<!-- 查询当前表存在的索引除了主键索引primary -->
 	<select id="findTableIndexByTableName" resultType="String" parameterType="String">
 		select index_name from information_schema.statistics
-		where table_name = #{tableName} and table_schema = (select database()) and lower(index_name) !='primary'
+		where table_name = '${tableName}' and table_schema = (select database()) and lower(index_name) !='primary'
 	</select>
 	
 	<!-- 删除索引 -->

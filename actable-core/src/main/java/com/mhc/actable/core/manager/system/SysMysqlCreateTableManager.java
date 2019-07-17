@@ -11,5 +11,7 @@ import java.util.List;
 public interface SysMysqlCreateTableManager {
 
 	public void syncMysqlTable(List<Class> entities);
+
+	public List<String> generateDDLs(List<Class> entities);
 	
 }
